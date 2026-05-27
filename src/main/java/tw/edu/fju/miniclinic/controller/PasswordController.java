@@ -15,7 +15,7 @@ import tw.edu.fju.miniclinic.model.DoctorRepository;
 import tw.edu.fju.miniclinic.model.PasswordForm;
 
 @Controller
-@RequestMapping("/password")
+@RequestMapping("/doctor/change-password")
 public class PasswordController {
 
     @Autowired
@@ -75,8 +75,6 @@ public class PasswordController {
         doctor.setPasswordHash(hashedNewPassword);
         doctorRepo.save(doctor);
 
-        // 6. 成功修改後顯示成功訊息 - 精準對接原版變數名 successMessage
-        model.addAttribute("successMessage", "密碼修改成功！");
-        return "password"; 
+        return "redirect:/doctor/dashboard";
     } 
 }
