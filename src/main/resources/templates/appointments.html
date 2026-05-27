@@ -44,9 +44,9 @@
                 <th>狀態</th>
             </tr>
         </thead>
-        <tbody>
-            <tr th:each="appt : ${appointments}">
-                <td th:text="${appt.apptId}">1</td>
+       <tbody>
+    <tr th:each="appt, iterStat : ${appointments}">
+        <td th:text="${iterStat.count}">1</td>
                 <td th:text="${appt.patient.chartNo}">TEST00001</td>
                 <td th:text="${appt.patient.name}">測試病患甲</td>
                 <td th:text="${appt.doctor.name}">陳志明醫師</td>
