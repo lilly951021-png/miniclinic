@@ -14,8 +14,9 @@ INSERT INTO patient (chart_no, name, gender, birth_date, phone) VALUES
     ('TEST00003', '李小華',     '女', '1988-11-30', '0934-567-890')
 ON CONFLICT (chart_no) DO NOTHING;
 
--- 初始掛號資料（🔥 移除寫死的 appt_id 欄位，讓系統自動遞增發號碼牌，徹底根除衝突）
-INSERT INTO appointment (chart_no, doctor_id, appt_date, time_slot, status) VALUES
-    ('TEST00001', 'D001', '2026-05-01', 'AM', 'BOOKED'),
-    ('TEST00002', 'D002', '2026-05-01', 'AM', 'BOOKED'),
-    ('TEST00003', 'D003', '2026-05-02', 'PM', 'BOOKED');
+-- 初始掛號資料（🔥 改為指定超大 ID，徹底跟系統預設的 1, 2, 3 號以及你點選的號碼牌完美錯開！）
+INSERT INTO appointment (appt_id, chart_no, doctor_id, appt_date, time_slot, status) VALUES
+    (991, 'TEST00001', 'D001', '2026-05-01', 'AM', 'BOOKED'),
+    (992, 'TEST00002', 'D002', '2026-05-01', 'AM', 'BOOKED'),
+    (993, 'TEST00003', 'D003', '2026-05-02', 'PM', 'BOOKED')
+ON CONFLICT (appt_id) DO NOTHING;
