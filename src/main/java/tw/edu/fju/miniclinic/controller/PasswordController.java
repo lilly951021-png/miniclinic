@@ -54,18 +54,21 @@ public class PasswordController {
 
         // 2. 驗證舊密碼是否正確 (BCrypt 比對) - 精準對接原版變數名 errorMessage
         if (!BCrypt.checkpw(form.getOldPassword(), doctor.getPasswordHash())) {
+            model.addAttribute("loggedInDoctorName", doctorName);
             model.addAttribute("errorMessage", "舊密碼錯誤");
             return "password";
         }
 
         // 3. 驗證新密碼與確認密碼是否一致 - 精準對接原版變數名 errorMessage
         if (!form.getNewPassword().equals(form.getConfirmPassword())) {
+           model.addAttribute("loggedInDoctorName", doctorName);
             model.addAttribute("errorMessage", "兩次密碼不相符");
             return "password";
         }
 
         // 4. 驗證新密碼長度是否少於 8 碼 - 精準對接原版變數名 errorMessage
         if (form.getNewPassword() == null || form.getNewPassword().length() < 8) {
+            model.addAttribute("loggedInDoctorName", doctorName);
             model.addAttribute("errorMessage", "密碼至少需要 8 個字元");
             return "password";
         }
