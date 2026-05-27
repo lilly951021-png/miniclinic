@@ -7,8 +7,11 @@
         body { font-family: "Microsoft JhengHei", sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; }
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #14B8A6; padding-bottom: 12px; }
         h1 { color: #0F2443; margin: 0; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .btn-change-password { text-decoration: none; background: #0F2443; color: white; padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-change-password:hover { background: #1E3A8A; }
         .logout-form { margin: 0; }
-        .logout-form button { background: #94A3B8; color: white; padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer; }
+        .logout-form button { background: #94A3B8; color: white; padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
         table { width: 100%; border-collapse: collapse; margin-top: 24px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #E2E8F0; }
         th { background: #0F2443; color: white; }
@@ -23,9 +26,12 @@
             <h1>Dashboard</h1>
             <p>歡迎，<span th:text="${doctor.name}"></span>（<span th:text="${doctor.department}"></span>）</p>
         </div>
-        <form class="logout-form" th:action="@{/logout}" method="post">
-            <button type="submit">登出</button>
-        </form>
+        <div class="header-actions">
+            <a th:href="@{/doctor/change-password}" class="btn-change-password">修改密碼</a>
+            <form class="logout-form" th:action="@{/logout}" method="post">
+                <button type="submit">登出</button>
+            </form>
+        </div>
     </header>
 
     <h2 th:text="|今日掛號：${today}|"></h2>
@@ -49,12 +55,13 @@
                 <td>
                     <span th:text="${appt.status}" th:class="${'status-' + appt.status}">BOOKED</span>
                     <button th:if="${appt.status == 'BOOKED'}"
-        th:data-id="${appt.apptId}"
-        onclick="cancelAppointment(this)"
-        style="margin-left: 10px; background-color: #DC2626; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-    取消
-</button>
-                </td> </tr>
+                            th:data-id="${appt.apptId}"
+                            onclick="cancelAppointment(this)"
+                            style="margin-left: 10px; background-color: #DC2626; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                        取消
+                    </button>
+                </td> 
+            </tr>
         </tbody>
     </table>
 
