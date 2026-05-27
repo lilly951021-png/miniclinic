@@ -78,8 +78,12 @@ public class PasswordController {
         doctor.setPasswordHash(hashedNewPassword);
         doctorRepo.save(doctor);
 
-        model.addAttribute("loggedInDoctorName", doctorName); // 確保名字還在
-        model.addAttribute("successMessage", "密碼修改成功！"); // 塞入綠色成功通知
-        return "password";
+        model.addAttribute("loggedInDoctorName", doctor.getName()); 
+        model.addAttribute("successMessage", "密碼修改成功！");
+        
+        // 清空輸入框，讓畫面變乾淨
+        model.addAttribute("passwordForm", new PasswordForm()); 
+        
+        return "password"; 
     } 
 }
