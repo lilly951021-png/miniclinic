@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>統計資訊 - MiniClinic</title>
+    <style>
+        /* --- 全局基礎設定 --- */
+        body {
+            font-family: "Microsoft JhengHei", "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            color: #1e293b;
+        }
+
+        /* --- 頂部導覽列 (配合左圖的質感) --- */
+        .navbar {
+            background-color: #0F2443;
+            padding: 15px 40px;
+            display: flex;
+            gap: 30px;
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .navbar a:hover {
+            opacity: 1;
+        }
+        .navbar a.active {
+            opacity: 1;
+            border-bottom: 2px solid #14B8A6;
+            padding-bottom: 4px;
+        }
+
+        /* --- 主內容容器 --- */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #0f172a;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .title-line {
+            height: 3px;
+            background-color: #14B8A6;
+            width: 100%;
+            margin-bottom: 40px;
+            border: none;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #334155;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* --- 三大數據卡片版面 (Flexbox) --- */
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-label {
+            font-size: 14px;
+            color: #64748b;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .card-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #0F2443;
+            display: block;
+        }
+
+        /* --- 現代化表格設定 --- */
+        .table-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0F2443;
+            color: white;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 16px 24px;
+            font-size: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* --- 底部超連結 --- */
+        .footer-links {
+            margin-top: 32px;
+            font-size: 15px;
+        }
+        .footer-links a {
+            color: #0F2443;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/">首頁</a>
+        <a href="/doctors">醫師清單</a>
+        <a href="/appointment/new">線上掛號</a>
+        <a href="/appointments">掛號記錄</a>
+        <a href="/statistics" class="active">統計資訊</a>
+    </div>
+
+    <div class="container">
+        <h1>統計資訊</h1>
+        <hr class="title-line">
+
+        <div class="card-row">
+            <div class="card">
+                <span class="card-label">醫師總數</span>
+                <span class="card-value" th:text="${doctorCount}">0</span>
+            </div>
+            <div class="card">
+                <span class="card-label">病患總數</span>
+                <span class="card-value" th:text="${patientCount}">0</span>
+            </div>
+            <div class="card">
+                <span class="card-label">掛號總數</span>
+                <span class="card-value" th:text="${appointmentCount}">0</span>
+            </div>
+        </div>
+
+        <h2>各科別掛號數</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>科別</th>
+                        <th>掛號數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="stat : ${deptStats}">
+                        <td th:text="${stat[0]}">科別名稱</td>
+                        <td th:text="${stat[1]}">數量</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-links">
+            <a th:href="@{/appointments}">查看掛號記錄</a> | 
+            <a href="/">← 返回首頁</a>
+        </div>
+    </div>
+
+</body>
+</html>

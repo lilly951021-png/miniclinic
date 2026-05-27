@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>病患清單 - MiniClinic</title>
+    <style>
+        /* 頁面整體設定，與醫師清單一致 */
+        body { 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            max-width: 960px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        /* 標題與青綠色底線 */
+        h1 { 
+            color: #0F2443; 
+            border-bottom: 3px solid #14B8A6; 
+            padding-bottom: 8px; 
+            margin-bottom: 24px;
+        }
+
+        /* 表格樣式設定 */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 16px; 
+            background-color: white;
+        }
+
+        /* 表頭：深藍色背景、白色文字 */
+        th { 
+            background: #0F2443; 
+            color: white; 
+            padding: 12px; 
+            text-align: left; 
+            font-weight: 500;
+        }
+
+        /* 表格單元格 */
+        td { 
+            padding: 12px; 
+            text-align: left; 
+            border-bottom: 1px solid #E2E8F0; 
+        }
+
+        /* 滑鼠懸停效果 */
+        tr:hover { 
+            background: #F8FAFC; 
+        }
+
+        /* 病患姓名連結樣式 (藍色) */
+        .patient-name {
+            color: #2563EB;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .patient-name:hover {
+            text-decoration: underline;
+        }
+
+        /* 無資料時的提示文字 */
+        .empty-msg {
+            color: #64748B;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>病患清單</h1>
+
+    <!-- 檢查後端傳來的 list 是否為空 -->
+    <p th:if="${patients.isEmpty()}" class="empty-msg">目前沒有符合條件的病患資料。</p>
+
+    <!-- 若有資料則顯示表格 -->
+    <table th:unless="${patients.isEmpty()}">
+        <thead>
+            <tr>
+                <th>病歷號</th>
+                <th>姓名</th>
+                <th>性別</th>
+                <th>聯絡電話</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 迴圈讀取 patients 列表中的每個 patient 物件 -->
+            <tr th:each="patient : ${patients}">
+                <td th:text="${patient.chartNo}">A001</td>
+                <td>
+                    <!-- 模擬醫師清單的姓名連結效果 -->
+                    <a href="#" class="patient-name" th:text="${patient.name}">病患姓名</a>
+                </td>
+                <td th:text="${patient.gender}">男</td>
+                <td th:text="${patient.phone}">0912-345-678</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
