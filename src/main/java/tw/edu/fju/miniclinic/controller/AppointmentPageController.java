@@ -21,17 +21,17 @@ public class AppointmentPageController {
         List<Appointment> allAppointments = appointmentRepo.findAll();
         model.addAttribute("appointments", allAppointments);
         
-        // 因為 appointment-result.html 上半部有用 ${appointment.apptId} 顯示剛剛成功的摘要
-        // 從導覽列直接點進來時，我們塞一個預設的空物件進去，防止 Thymeleaf 解析錯誤爆炸。
+        // ✨【核心修改點】：因為是直接從導覽列點進來的，我們設定 showSummary 為 false！
+        // 告訴前端：不要顯示上半部那個討人厭的「掛號成功摘要」！
+        model.addAttribute("showSummary", false);
+        
+        // 防空針防爆處理
         if (!allAppointments.isEmpty()) {
-            // 如果資料庫本來就有資料，拿最新或第一筆塞進去填補欄位
             model.addAttribute("appointment", allAppointments.get(0));
         } else {
-            // 如果是空資料庫，塞一個乾淨的空物件進去
             model.addAttribute("appointment", new Appointment());
         }
         
-        // 3. 回傳你的歷史紀錄大表格網頁
-        return "appointment-result";
+        return "appointments";
     }
 }
