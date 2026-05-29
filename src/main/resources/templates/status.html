@@ -154,11 +154,11 @@
 <body>
 
     <div class="navbar">
-        <a href="/">首頁</a>
-        <a href="/doctors">醫師清單</a>
-        <a href="/appointment/new">線上掛號</a>
-        <a href="/appointments">掛號記錄</a>
-        <a href="/statistics" class="active">統計資訊</a>
+        <a th:href="@{/}">首頁</a>
+        <a th:href="@{/doctors}">醫師清單</a>
+        <a th:href="@{/appointment/new}">線上掛號</a>
+        <a th:href="@{/appointments}">掛號記錄</a>
+        <a th:href="@{/statistics}" class="active">統計資訊</a>
     </div>
 
     <div class="container">
@@ -201,7 +201,7 @@
 
         <div class="footer-links">
             <a th:href="@{/appointments}">查看掛號記錄</a> | 
-            <a href="/">← 返回首頁</a>
+            <a th:href="@{/}">← 返回首頁</a>
         </div>
     </div>
 

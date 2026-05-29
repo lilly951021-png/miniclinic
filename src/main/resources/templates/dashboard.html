@@ -54,11 +54,19 @@
                 <td th:text="${appt.patient.chartNo}">TEST00001</td>
                 <td>
                     <span th:text="${appt.status}" th:class="${'status-' + appt.status}">BOOKED</span>
+                    
                     <button th:if="${appt.status == 'BOOKED'}"
                             th:data-id="${appt.apptId}"
                             onclick="cancelAppointment(this)"
                             style="margin-left: 10px; background-color: #DC2626; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
                         取消
+                    </button>
+
+                    <button th:if="${appt.status == 'BOOKED'}"
+                            th:data-id="${appt.apptId}"
+                            onclick="completeAppointment(this)"
+                            style="margin-left: 6px; background-color: #10B981; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                        看診完成
                     </button>
                 </td> 
             </tr>
@@ -67,13 +75,13 @@
      <div style="margin-top: 32px; font-size: 16px; text-align: left;">
         <a href="/" style="color: #0000EE; text-decoration: underline;">← 返回首頁</a>
     </div>
+    
     <script>
+    // 原有的取消掛號函式
     function cancelAppointment(button) {
-        // 1. 取得綁定在按鈕上的掛號 ID (apptId)
         const apptId = button.getAttribute('data-id');
         
         if (confirm('確定要取消這筆掛號嗎？')) {
-            // 2. 透過 JavaScript fetch 呼叫後端 API
             fetch(`/api/appointments/${apptId}/status`, {
                 method: 'PUT',
                 headers: {
@@ -83,10 +91,38 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // 3. 成功後重新整理頁面，讓狀態重載為 CANCELLED
                     location.reload();
                 } else {
                     alert('取消失敗，你可能沒有權限修改此預約（403）或該預約不存在（404）。');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('連線失敗，請檢查後端伺服器是否正常運作。');
+            });
+        }
+    }
+
+    // ✨ 新增：處理看診完成的函式
+    function completeAppointment(button) {
+        // 1. 取得綁定在按鈕上的掛號 ID (apptId)
+        const apptId = button.getAttribute('data-id');
+        
+        if (confirm('確定要將此筆掛號標記為「看診完成」嗎？')) {
+            // 2. 透過 JavaScript fetch 呼叫後端 API，傳送 COMPLETED
+            fetch(`/api/appointments/${apptId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: 'COMPLETED' })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // 3. 成功後重新整理頁面，讓狀態重載為 COMPLETED
+                    location.reload();
+                } else {
+                    alert('更新失敗，你可能沒有權限修改此預約（403）或該預約不存在（404）。');
                 }
             })
             .catch(error => {

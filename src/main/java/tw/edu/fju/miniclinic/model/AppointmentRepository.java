@@ -12,7 +12,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByPatient(Patient patient);
     long countByApptDateBetween(LocalDate from, LocalDate to);
     List<Appointment> findByDoctorAndApptDate(Doctor doctor, LocalDate apptDate);  // 新加入
-    // 新增：依照醫師的科別(specialization)分組統計掛號數
-  @Query("SELECT a.doctor.department, COUNT(a) FROM Appointment a GROUP BY a.doctor.department")
-List<Object[]> countAppointmentsByDepartment();
+    // 依照醫師的科別(specialization)分組統計掛號數
+  long countByStatus(String status);
+    @Query("SELECT a.doctor.department, COUNT(a) FROM Appointment a GROUP BY a.doctor.department")
+    List<Object[]> countAppointmentsByDepartment();
 }

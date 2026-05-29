@@ -62,8 +62,6 @@ public class AppointmentApiController {
             model.addAttribute("doctors", doctorRepo.findAll());
             return "appointment-new";
         }
-
-        // --- 以下是你原本寫好的商務邏輯與資料庫比對 ---
         Patient patient = patientRepo.findById(form.getChartNo()).orElse(null);
         Doctor doctor = doctorRepo.findById(form.getDoctorId()).orElse(null);
 
@@ -170,5 +168,33 @@ public class AppointmentApiController {
 
         appt.setStatus(newStatus);
         return ResponseEntity.ok(appointmentRepo.save(appt));
+    }
+    @GetMapping("/api/stats")
+    @ResponseBody
+    public Map<String, Object> getSystemStats() {
+        // 1. 查詢各大資料表的總筆數
+        long totalDoctors = doctorRepo.count();
+        long totalPatients = patientRepo.count();
+        long totalAppointments = appointmentRepo.count();
+
+        // 2. 查詢各個掛號狀態的個別筆數
+        long bookedCount = appointmentRepo.countByStatus("BOOKED");
+        long completedCount = appointmentRepo.countByStatus("COMPLETED");
+        long cancelledCount = appointmentRepo.countByStatus("CANCELLED");
+
+        // 3. 組裝內層的 byStatus 巢狀 JSON 物件
+        Map<String, Long> byStatusMap = Map.of(
+            "BOOKED", bookedCount,
+            "COMPLETED", completedCount,
+            "CANCELLED", cancelledCount
+        );
+
+        // 4. 組裝外層完整的回傳物件並返回（Spring Boot 會自動將其轉為外部工具要驗收的 JSON）
+        return Map.of(
+            "totalDoctors", totalDoctors,
+            "totalPatients", totalPatients,
+            "totalAppointments", totalAppointments,
+            "byStatus", byStatusMap
+        );
     }
 }
