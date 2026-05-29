@@ -26,6 +26,13 @@ public class DashboardController {
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
         String doctorId = (String) session.getAttribute("loggedInDoctorId");
+        
+    
+        if (doctorId == null) {
+            return "redirect:/login";
+        }
+
+        // 安全拿到 doctorId 後，才進資料庫查詢
         Doctor doctor = doctorRepo.findById(doctorId).orElse(null);
 
         // Session 裡的 doctorId 查不到對應醫師（資料被刪除等異常情況）
